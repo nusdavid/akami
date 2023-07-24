@@ -88,7 +88,11 @@ module Akami
 
       def binary_security_token
         {
-          "wsse:BinarySecurityToken" => Base64.encode64(certs.cert.to_der).gsub("\n", ''),
+          # "wsse:BinarySecurityToken" => Base64.encode64(certs.cert.to_der).gsub("\n", ''),
+          #"wsse:BinarySecurityToken" => '<xop:Include href="cid:http://tempuri.org/1/638239894675516655" xmlns:xop="http://www.w3.org/2004/08/xop/include"/>',
+          "wsse:BinarySecurityToken" => {
+            'xop:Include/' => nil,
+            :attributes! => { "xop:Include/" => {'href' => "cid:http://tempuri.org/1/638239894675516655", "xmlns:xop"=>"http://www.w3.org/2004/08/xop/include"}  }},
           :attributes! => { "wsse:BinarySecurityToken" => {
             "wsu:Id" => security_token_id,
             'EncodingType' => Base64EncodingType,
